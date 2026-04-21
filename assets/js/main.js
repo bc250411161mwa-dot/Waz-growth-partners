@@ -54,6 +54,60 @@
     window.addEventListener("scroll", handleSticky, { passive: true });
     handleSticky();
 
+    function isAndroidDevice() {
+        return /Android/i.test(navigator.userAgent || "");
+    }
+
+    function getEmailAddressFromLink(link) {
+        var href = (link && link.getAttribute("href")) || "";
+
+        if (!href) {
+            return "";
+        }
+
+        var mailtoMatch = href.match(/^mailto:([^?]+)/i);
+        if (mailtoMatch && mailtoMatch[1]) {
+            return decodeURIComponent(mailtoMatch[1]);
+        }
+
+        var toMatch = href.match(/[?&]to=([^&#]+)/i);
+        if (toMatch && toMatch[1]) {
+            return decodeURIComponent(toMatch[1]);
+        }
+
+        return "";
+    }
+
+    function openEmailComposer(emailAddress) {
+        var gmailComposeUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(emailAddress);
+
+        if (isAndroidDevice()) {
+            window.location.href = "intent://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(emailAddress) + "#Intent;scheme=https;package=com.google.android.gm;S.browser_fallback_url=" + encodeURIComponent(gmailComposeUrl) + ";end";
+            return;
+        }
+
+        var tempLink = document.createElement("a");
+        tempLink.href = gmailComposeUrl;
+        tempLink.target = "_blank";
+        tempLink.rel = "noopener noreferrer";
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        tempLink.remove();
+    }
+
+    var emailActionLinks = document.querySelectorAll(".footer-email-btn, .footer-socials a[aria-label='Email'], .founder-socials a[aria-label='Email']");
+    emailActionLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            var emailAddress = getEmailAddressFromLink(link);
+            if (!emailAddress) {
+                return;
+            }
+
+            event.preventDefault();
+            openEmailComposer(emailAddress);
+        });
+    });
+
     // Auto-mark current page in navigation
     var currentPage = window.location.pathname.split("/").pop() || "index.html";
     var navLinks = document.querySelectorAll(".navbar .nav-link");
