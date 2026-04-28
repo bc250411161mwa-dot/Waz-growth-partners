@@ -95,7 +95,7 @@
         tempLink.remove();
     }
 
-    var emailActionLinks = document.querySelectorAll(".footer-email-btn, .footer-socials a[aria-label='Email'], .founder-socials a[aria-label='Email']");
+    var emailActionLinks = document.querySelectorAll(".footer-email-btn, .footer-socials a[aria-label='Email'], .founder-socials a[aria-label='Email'], a[href^='mailto:'], a[href*='mail.google.com/mail/?view=cm&fs=1&to=']");
     emailActionLinks.forEach(function (link) {
         link.addEventListener("click", function (event) {
             var emailAddress = getEmailAddressFromLink(link);

@@ -1,0 +1,16 @@
+{
+  "name": "Waz Growth Partners",
+  "short_name": "Waz Growth",
+  "description": "Premium B2B lead generation and outreach systems.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08121f",
+  "theme_color": "#08121f",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
